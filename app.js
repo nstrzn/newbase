@@ -26,6 +26,10 @@ app.post("/", homeController.logRequestPaths);
 
 app.get("/", homeController.getHomePage);
 
+app.get("/forum", homeController.getForumPage);
+
+app.get("/contact", homeController.getContactPage);
+
 app.post("/contact", (req, res) => {
     res.send("Contact information submitted");
 });

@@ -12,3 +12,11 @@ exports.logRequestPaths = (req, res) => {
 exports.getHomePage = (req, res) => {
     res.render("index");
 }
+
+exports.getContactPage = (req, res) => {
+    res.render("contact");
+}
+
+exports.getForumPage = (req, res) => {
+    res.render("forum");
+}
