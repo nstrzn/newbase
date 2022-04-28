@@ -1,41 +1,32 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const res = require("express/lib/response");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+const port = 3001,
+http = require("http"),
+httpStatus = require("http-status-codes"),
+app = http.createServer((request, response)=>{ 
+    console.log("Recieved an incoming request!");
+    response .writeHead(httpSatus.OK,{
+        "Content-Type": "text/html"
+    });
+    let responseMessage = "<h1>Hello, Universe!</h1>";
+    response.write(responseMessage);
+    response.end();
+    console.log(`Send a response : ${responseMessage}`);
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.on("request",(req,res)=>{
+    res.writeHead(httpStatus.OK,{
+        "Content-Type": "text/html"
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    });
+
+let  responseMessage =  "<h1> This  will show on tghe screen.</h1>";
+res.end(responseMessage);
 });
+app.listen(port);
+console.log(`The server has started and is listening on port number : ${port}`);
 
-module.exports = app;
+const getJSONString = obj =>{
+    return JSON.stringify(oby, null, 2);
+};
