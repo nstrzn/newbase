@@ -1,11 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title>New Base</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
+    <link rel="stylesheet" href="/stylesheets/newbase.css" />
   </head>
+
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div class="nav">
+      <div class="col-sm nav-align"><h1 id="title">New Base</h1></div>
+      <div class="col-sm nav-align">
+        <a href="/"> <span class="button btn-blue">Home</span> </a>
+        <a href="/forum"> <span class="button btn-blue">Forum</span> </a>
+        <a href="/contact"> <span class="button btn-blue">Contact</span> </a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-sm-6">
+        <h1>Willkommen!</h1>
+        <p>Schau doch gerne bei unserem Forum vorbei!</p>
+        <p>
+          Unter <a href="/forum">Forum</a> sind alle neuen Beiträge zu
+          finden
+        </p>
+      </div>
+      <div class="col-sm-6">
+      <form class="registration-form">
+        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px">
+          Sign into your account
+        </h5>
+        <div class="form-outline mb-4">
+          <input
+            type="email"
+            id="form2Example17"
+            class="form-control form-control-lg"
+          />
+          <label class="form-label" for="form2Example17">Email address</label>
+        </div>
+        <div class="form-outline mb-4">
+          <input
+            type="password"
+            id="form2Example27"
+            class="form-control form-control-lg"
+          />
+          <label class="form-label" for="form2Example27">Password</label>
+        </div>
+        <div class="pt-1 mb-4">
+          <button class="btn btn-blue btn-lg btn-block" type="button">
+            Login
+          </button>
+        </div>
+        <a class="small text-muted" href="#!">Forgot password?</a>
+        <p class="mb-5 pb-lg-2" style="color: #393f81">
+          Don't have an account?
+          <a href="#!" data-toggle="modal" data-target="#modalSubscriptionForm">Register here</a>
+        </p>
+      </form>
+    </div>
+    </div>
   </body>
 </html>
