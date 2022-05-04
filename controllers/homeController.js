@@ -1,3 +1,20 @@
+"use strict";
+
+var forum = [
+  {
+    title: "Eintrag 1",
+    text: "Beispieltext"
+  },
+  {
+    title: "Eintrag 2",
+    text: "Beispieltext"
+  },
+  {
+    title: "Eintrag 3",
+    text: "Beispieltext"
+  }
+];
+
 exports.sendReqParam = (req, res) => {
     let userId = req.params.id;
     res.send(`Page for ${userId}`);
@@ -18,5 +35,11 @@ exports.getContactPage = (req, res) => {
 }
 
 exports.getForumPage = (req, res) => {
-    res.render("forum");
+    res.render("forum", {
+        forumBeitraege: forum
+      });
 }
+
+exports.postedSignUpForm = (req, res) => {
+    res.render("thanks");
+  };
