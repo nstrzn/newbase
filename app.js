@@ -4,8 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const homeController = require("./controllers/homeController");
+const errorController = require("./controllers/errorController");
 const port = 3000;
 var app = express();
+layouts = require("express-ejs-layouts");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -16,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(layouts);
 
 app.use((req, res, next) => {
     console.log(`request made to: ${req.url}`);
@@ -30,11 +33,12 @@ app.get("/forum", homeController.getForumPage);
 
 app.get("/contact", homeController.getContactPage);
 
-app.post("/contact", (req, res) => {
-    res.send("Contact information submitted");
-});
+app.post("/contact", homeController.postedSignUpForm);
 
 app.get("/users/:id", homeController.sendReqParam);
+
+app.use(errorController.pageNotFoundError);
+app.use(errorController.internalServerError);
 
 app.listen(port, () => {
     console.log(`Listening to requests on http://localhost:${port}`);
