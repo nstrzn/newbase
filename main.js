@@ -1,45 +1,33 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const homeController = require("./controllers/homeController");
-const errorController = require("./controllers/errorController");
-const port = 3000;
-var app = express();
-layouts = require("express-ejs-layouts");
+"use strict";
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+const express = require("express"),
+    app = express(),
+    homeController = require("./controllers/homeController"),
+    errorController = require("./controllers/errorController"),
+    layouts = require("express-ejs-layouts");
 
-app.use(logger('dev'));
+app.set("view engine", "ejs");
+app.set("port", process.env.PORT || 3000);
+app.use(
+    express.urlencoded({
+        extended: false
+    })
+);
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(layouts);
+app.use(express.static("public"));
 
-app.use((req, res, next) => {
-    console.log(`request made to: ${req.url}`);
-    next();
+app.get("/", (req, res) => {
+    res.render("index");
 });
 
-app.post("/", homeController.logRequestPaths);
-
-app.get("/", homeController.getHomePage);
-
-app.get("/forum", homeController.getForumPage);
-
-app.get("/contact", homeController.getContactPage);
-
+app.get("/forum", homeController.showForum);
+app.get("/contact", homeController.showSignUp);
 app.post("/contact", homeController.postedSignUpForm);
-
-app.get("/users/:id", homeController.sendReqParam);
 
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
 
-app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
+app.listen(app.get("port"), () => {
+    console.log(`Server running at http://localhost:${app.get("port")}`);
 });
