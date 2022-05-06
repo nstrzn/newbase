@@ -1,16 +1,18 @@
 <div class="container">
-  <div class="col-sm-6">
-    <img src="images/forum-cat.png" alt="Forum Cat">
+
+    <div class="col-sm-6">
+      <img src="images/forum-cat.png" alt="Forum Cat">
+    </div>
+    <div class="col-sm-6">
+      <h1 class="title">Forum</h1>
+      <h1>Forum Beiträge</h1>
+      <% forumBeitraege.forEach(forum => { %>
+      <h5>
+        <%= forum.title %>
+      </h5>
+      <span>
+        <%= forum.text %> </span>
+      <% }); %>
+    </div>
   </div>
-  <div class="col-sm-6">
-    <h1 class="title">Forum</h1>
-    <h1>Forum Beiträge</h1>
-    <% forumBeitraege.forEach(forum => { %>
-    <h5>
-      <%= forum.title %>
-    </h5>
-    <span>
-      <%= forum.text %> </span>
-    <% }); %>
-  </div>
-</div>
+
