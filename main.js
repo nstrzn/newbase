@@ -7,7 +7,7 @@ const express = require("express"),
     layouts = require("express-ejs-layouts");
 
 app.set("view engine", "ejs");
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 3001);
 app.use(
     express.urlencoded({
         extended: false
@@ -24,6 +24,8 @@ app.get("/", (req, res) => {
 app.get("/forum", homeController.showForum);
 app.get("/contact", homeController.showSignUp);
 app.post("/contact", homeController.postedSignUpForm);
+
+
 
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);

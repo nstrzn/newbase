@@ -1,5 +1,7 @@
 "use strict";
 
+const res = require("express/lib/response");
+
 var forum = [
   {
     title: "Eintrag 1",
@@ -26,5 +28,6 @@ exports.showSignUp = (req, res) => {
 };
 
 exports.postedSignUpForm = (req, res) => {
-  res.render("thanks");
+  let paramsName = req.body.name;
+  res.render("thanks", {name: paramsName});
 };
