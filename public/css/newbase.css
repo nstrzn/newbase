@@ -3,6 +3,7 @@ body {
   padding-top: 150px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #625a56;
+  font-size: 14pt;
 }
 
 #nav {
@@ -81,4 +82,11 @@ a {
 .forum-container {
   padding-left: 5em;
   padding-right: 5em;
+}
+
+.impressum {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding-right: 1em;
 }
