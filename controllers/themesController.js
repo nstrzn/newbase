@@ -11,3 +11,14 @@ exports.getAllThemes = (req, res, next) => {
     next();
   });
 };
+
+exports.saveTheme = (req, res) => {
+  let newThema = new Thema({
+    title: req.body.title,
+    description: req.body.description,
+    entryDate: new Date(),
+  });
+  newThema.save((error, result) => {
+    if(error) res.send(error);
+  })
+}

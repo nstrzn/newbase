@@ -16,18 +16,6 @@ const express = require("express"),
   themesController = require("./controllers/themesController"),
   layouts = require("express-ejs-layouts");
 
-/*   Thema.create(
-    {
-      title: "Thema 4",
-      description: "Beispieltext",
-      entryDate: new Date(),
-    },
-    function (error, savedDocument) {
-      if (error) console.log(error);
-      console.log(savedDocument);
-    }
-  ); */
-
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3001);
 app.use(
@@ -46,6 +34,8 @@ app.get("/", (req, res) => {
 app.get("/contact", homeController.showSignUp);
 app.post("/contact", homeController.postedSignUpForm);
 app.get("/forum", themesController.getAllThemes);
+
+app.post("/forum", themesController.saveTheme);
 
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
