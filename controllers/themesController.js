@@ -3,13 +3,19 @@
 const Thema = require("../models/Thema");
 
 exports.getAllThemes = (req, res, next) => {
-  Thema.find({}, (error, themes) => {
-    if (error) next(error);
-    req.data = themes;
-    console.log(themes);
-    res.render("forum", { themes: req.data });
-    next();
+  Thema.find({}).exec()
+  .then((themes) => {
+  res.render("forum", {
+    themes: themes
   });
+  })
+.catch((error) => {
+  console.log(error.message);
+  return[];
+})
+.then(() => {
+  console.log("promise complete");
+});
 };
 
 exports.saveTheme = (req, res) => {
@@ -18,7 +24,9 @@ exports.saveTheme = (req, res) => {
     description: req.body.description,
     entryDate: new Date(),
   });
-  newThema.save((error, result) => {
+
+  newThema.save()
+   .catch(error => {
     if(error) res.send(error);
-  })
+  });
 }

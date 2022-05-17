@@ -8,6 +8,7 @@ const db = mongoose.connection;
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
+mongoose.Promise = global.Promise;
 
 const express = require("express"),
   app = express(),
@@ -34,7 +35,6 @@ app.get("/", (req, res) => {
 app.get("/contact", homeController.showSignUp);
 app.post("/contact", homeController.postedSignUpForm);
 app.get("/forum", themesController.getAllThemes);
-
 app.post("/forum", themesController.saveTheme);
 
 app.use(errorController.pageNotFoundError);
