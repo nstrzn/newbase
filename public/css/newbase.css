@@ -63,6 +63,7 @@ a {
 .submit-btn {
   border: none;
   outline: none;
+  margin-bottom: 0.5rem;
 }
 
 .submit-btn:focus {
@@ -89,4 +90,13 @@ a {
   bottom: 0;
   right: 0;
   padding-right: 1em;
+}
+
+.card-text {
+  margin-top: 1em;
+}
+
+.flex-row-container {
+  display: flex;
+  align-items: center;
 }

@@ -8,12 +8,13 @@ const db = mongoose.connection;
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
+mongoose.Promise = global.Promise;
 
 const express = require("express"),
   app = express(),
-  homeController = require("./controllers/homeController"),
   errorController = require("./controllers/errorController"),
   themesController = require("./controllers/themesController"),
+  subscribersController = require("./controllers/subscribersController"),
   layouts = require("express-ejs-layouts");
 
 app.set("view engine", "ejs");
@@ -31,10 +32,12 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/contact", homeController.showSignUp);
-app.post("/contact", homeController.postedSignUpForm);
 app.get("/forum", themesController.getAllThemes);
+app.get("/forum/:id", themesController.showTheme);
+app.get("/subscribers", subscribersController.getAllSubscribers);
+app.get("/contact", subscribersController.getSubscriptionPage);
 
+app.post("/subscribe", subscribersController.saveSubscriber);
 app.post("/forum", themesController.saveTheme);
 
 app.use(errorController.pageNotFoundError);
