@@ -90,3 +90,12 @@ a {
   right: 0;
   padding-right: 1em;
 }
+
+.card-text {
+  margin-top: 1em;
+}
+
+.flex-row-container {
+  display: flex;
+  align-items: center;
+}

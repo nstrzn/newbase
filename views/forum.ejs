@@ -35,7 +35,7 @@
     <tbody>
       <% themes.forEach(t => { %>
       <tr>
-        <td><%= t.title %></td>
+        <td> <a href="<%= `/forum/${t._id}` %>"><span><%= t.title %></span></a></td>
         <td><%= t.description %></td>
         <td><%= t.entryDate.toLocaleString() %></td>
       </tr>
