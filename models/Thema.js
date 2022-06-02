@@ -1,7 +1,14 @@
+"use strict";
+
 const mongoose = require("mongoose"),
 themaSchema = mongoose.Schema({
-title: String,
+    title: {
+        type: String,
+        required: true,
+        unique: true
+      },
 description: String,
-entryDate: Date
+entryDate: Date,
 });
 module.exports = mongoose.model("Thema", themaSchema);
+
