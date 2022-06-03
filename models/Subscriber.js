@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"),
+const mongoose = require("mongoose");
 subscriberSchema = mongoose.Schema({
 name: {
     type: String,
@@ -12,7 +12,7 @@ email: {
 },
 zipCode: {
     type: Number,
-    min: [10000, "Zip code too short"],
+    min: [1000, "Zip code too short"],
     max: [99999, "Zip code too long"],
 },
 themes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Thema" }]
@@ -30,10 +30,3 @@ subscriberSchema.methods.findLocalSubscribers = function() {
 
 module.exports = mongoose.model("Subscriber", subscriberSchema);
 
-const mongoose = require("mongoose"),
-Subscriber = require("./models/subscriber");
-mongoose.connect(
- "mongodb://localhost:27017/newbase_db",
- {useNewUrlParser: true}
-);
-mongoose.Promise = global.Promise;

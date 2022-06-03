@@ -5,10 +5,10 @@ themaSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true
       },
 description: String,
 entryDate: Date,
 });
+
 module.exports = mongoose.model("Thema", themaSchema);
 

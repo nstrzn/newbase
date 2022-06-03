@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 mongoose.connect("mongodb://127.0.0.1:27017/newbase_db", {
   useNewUrlParser: true,
 });
+mongoose.Promise = global.Promise;
+
 const db = mongoose.connection;
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");

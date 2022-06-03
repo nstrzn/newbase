@@ -17,17 +17,21 @@ var forum = [
   }
 ];
 
-exports.showForum = (req, res) => {
-  res.render("forum", {
-    forumBeitraege: forum
-  });
+module.exports = {
+  showForum: (req, res) => {
+    res.render("forum", {
+      forumBeitraege: forum
+    });
+  },
+  showSignUp: (req, res) => {
+    res.render("contact");
+  },
+
+  postedSignUpForm: (req, res) => {
+    let paramsName = req.body.name;
+    res.render("thanks", {name: paramsName});
+  }
 };
 
-exports.showSignUp = (req, res) => {
-  res.render("contact");
-};
 
-exports.postedSignUpForm = (req, res) => {
-  let paramsName = req.body.name;
-  res.render("thanks", {name: paramsName});
-};
+

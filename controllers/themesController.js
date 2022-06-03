@@ -2,7 +2,8 @@
 
 const Thema = require("../models/Thema");
 
-exports.getAllThemes = (req, res) => {
+module.exports = {
+getAllThemes: (req, res) => {
   Thema.find({})
     .exec()
     .then((themes) => {
@@ -17,9 +18,9 @@ exports.getAllThemes = (req, res) => {
     .then(() => {
       console.log("promise complete");
     });
-};
+},
 
-exports.showTheme = (req, res) => {
+showTheme: (req, res) => {
   let themeId = req.params.id;
   Thema.findById(themeId)
     .then((theme) => {
@@ -29,9 +30,9 @@ exports.showTheme = (req, res) => {
       console.log(error.message);
       return -1;
     });
-};
+},
 
-exports.saveTheme = (req, res) => {
+saveTheme: (req, res) => {
   let newThema = new Thema({
     title: req.body.title,
     description: req.body.description,
@@ -45,4 +46,6 @@ exports.saveTheme = (req, res) => {
     .catch((error) => {
       res.send(error);
     });
+},
+
 };
