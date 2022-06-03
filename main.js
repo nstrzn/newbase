@@ -15,6 +15,7 @@ const express = require("express"),
   errorController = require("./controllers/errorController"),
   themesController = require("./controllers/themesController"),
   subscribersController = require("./controllers/subscribersController"),
+  usersController = require("./controllers/usersController"),
   layouts = require("express-ejs-layouts");
 
 app.set("view engine", "ejs");
@@ -36,6 +37,7 @@ app.get("/forum", themesController.getAllThemes);
 app.get("/forum/:id", themesController.showTheme);
 app.get("/subscribers", subscribersController.getAllSubscribers);
 app.get("/contact", subscribersController.getSubscriptionPage);
+app.get("/users", usersController.index);
 
 app.post("/subscribe", subscribersController.saveSubscriber);
 app.post("/forum", themesController.saveTheme);
