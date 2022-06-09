@@ -45,8 +45,8 @@ router.get("/", (req, res) => {
 
 router.get("/forum", themesController.getAllThemes);
 router.get("/forum/:id", themesController.showTheme);
-router.get("/subscribers", subscribersController.getAllSubscribers);
-router.get("/contact", subscribersController.getSubscriptionPage);
+//router.get("/subscribers", subscribersController.getAllSubscribers);
+//router.get("/contact", subscribersController.getSubscriptionPage);
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.post("/users/create", usersController.create, usersController.redirectView);
@@ -54,7 +54,27 @@ router.get("/users/:id/edit", usersController.edit);
 router.put("/users/:id/update", usersController.update, usersController.redirectView);
 router.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
 router.get("/users/:id", usersController.show, usersController.showView);
-router.post("/subscribe", subscribersController.saveSubscriber);
+
+router.get("/subscribers", subscribersController.index, subscribersController.indexView);
+router.get("/subscribers/new", subscribersController.new);
+router.post(
+  "/subscribers/create",
+  subscribersController.create,
+  subscribersController.redirectView
+);
+router.get("/subscribers/:id/edit", subscribersController.edit);
+router.put(
+  "/subscribers/:id/update",
+  subscribersController.update,
+  subscribersController.redirectView
+);
+router.get("/subscribers/:id", subscribersController.show, subscribersController.showView);
+router.delete(
+  "/subscribers/:id/delete",
+  subscribersController.delete,
+  subscribersController.redirectView
+);
+//router.post("/subscribe", subscribersController.saveSubscriber);
 router.post("/forum", themesController.saveTheme);
 
 
