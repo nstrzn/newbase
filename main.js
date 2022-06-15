@@ -14,8 +14,13 @@ const express = require("express"),
   app = express(),
   router = express.Router(),
   methodOverride = require("method-override"),
+  expressSession = require("express-session"),
+  cookieParser = require("cookie-parser"),
+  connectFlash = require("connect-flash"),
+  expressValidator = require("express-validator"),
   errorController = require("./controllers/errorController"),
   themesController = require("./controllers/themesController"),
+  homeController = require("./controllers/homeController"),
   subscribersController = require("./controllers/subscribersController.js"),
   usersController = require("./controllers/usersController.js"),
   layouts = require("express-ejs-layouts");
@@ -23,7 +28,10 @@ const express = require("express"),
 
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3001);
-app.use(
+
+router.use(express.static("public"));
+router.use(layouts);
+router.use(
   express.urlencoded({
     extended: false,
   })
@@ -36,12 +44,27 @@ router.use(
 );
 
 router.use(express.json());
-router.use(layouts);
-router.use(express.static("public"));
+router.use(cookieParser("secret_passcode"));
+router.use(
+  expressSession({
+    secret: "secret_passcode",
+    cookie: {
+      maxAge: 4000000
+    },
+    resave: false,
+    saveUninitialized: false
+  })
+);
+router.use(connectFlash());
 
-router.get("/", (req, res) => {
-  res.render("index");
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
 });
+router.use(expressValidator());
+router.use(homeController.logRequestPaths);
+
+router.get("/", homeController.index);
 
 router.get("/forum", themesController.getAllThemes);
 router.get("/forum/:id", themesController.showTheme);
@@ -49,7 +72,9 @@ router.get("/forum/:id", themesController.showTheme);
 //router.get("/contact", subscribersController.getSubscriptionPage);
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
-router.post("/users/create", usersController.create, usersController.redirectView);
+router.post("/users/create", usersController.validate, usersController.create, usersController.redirectView);router.get("/users/login", usersController.login);
+router.get("/users/login", usersController.login);
+router.post("/users/login", usersController.authenticate, usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);
 router.put("/users/:id/update", usersController.update, usersController.redirectView);
 router.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
