@@ -32,9 +32,15 @@ const expressSession = require("express-session"),
   },
   resave: false,
   saveUninitialized: false
-  }));
+  })
+  );
+  
   router.use(connectFlash());
 
+  router.use((req, res, next) => {
+    res.locals.flashMessages = req.flash();
+    next();
+    });  
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3001);
 app.use(
