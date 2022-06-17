@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  padding-top: 150px;
+  padding-top: 120px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #625a56;
   font-size: 14pt;
@@ -99,4 +99,23 @@ a {
 .flex-row-container {
   display: flex;
   align-items: center;
+}
+
+.flashes {
+  text-align: center;
+  margin-bottom: 1.5em;
+  padding: 0;
+}
+
+.flash {
+  padding: 1em;
+  color: white;
+}
+
+.flash.error {
+  background-color: rgb(228, 54, 54);
+}
+
+.flash.success {
+  background-color: rgb(19, 158, 19);
 }

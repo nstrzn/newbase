@@ -9,50 +9,50 @@ var userSchema = new Schema(
     name: {
       first: {
         type: String,
-        trim: true
+        trim: true,
       },
       last: {
         type: String,
-        trim: true
-      }
+        trim: true,
+      },
     },
     email: {
       type: String,
       required: true,
       lowercase: true,
-      unique: true
+      unique: true,
     },
     zipCode: {
       type: Number,
       min: [1000, "Zip code too short"],
-      max: 99999
+      max: 99999,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     subscribedAccount: { type: Schema.Types.ObjectId, ref: "Subscriber" },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
-userSchema.virtual("fullName").get(function() {
+userSchema.virtual("fullName").get(function () {
   return `${this.name.first} ${this.name.last}`;
 });
 
-userSchema.pre("save", function(next) {
+userSchema.pre("save", function (next) {
   let user = this;
   if (user.subscribedAccount === undefined) {
     Subscriber.findOne({
-      email: user.email
+      email: user.email,
     })
-      .then(subscriber => {
+      .then((subscriber) => {
         user.subscribedAccount = subscriber;
         next();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`Error in connecting subscriber: ${error.message}`);
         next(error);
       });

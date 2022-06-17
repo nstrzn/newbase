@@ -7,32 +7,32 @@ var subscriberSchema = new Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     email: {
       type: String,
       required: true,
       lowercase: true,
-      unique: true
+      unique: true,
     },
     zipCode: {
       type: Number,
       min: [10000, "Zip code too short"],
-      max: 99999
+      max: 99999,
     },
     forum: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Fourm"
-      }
-    ]
+        ref: "Fourm",
+      },
+    ],
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
-subscriberSchema.methods.getInfo = function() {
+subscriberSchema.methods.getInfo = function () {
   return `Name: ${this.name} Email: ${this.email} Zip Code: ${this.zipCode}`;
 };
 
