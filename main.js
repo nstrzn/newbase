@@ -21,6 +21,20 @@ const express = require("express"),
   layouts = require("express-ejs-layouts");
 
 
+const expressSession = require("express-session"),
+  cookieParser = require("cookie-parser"),
+  connectFlash = require("connect-flash");
+  router.use(cookieParser("secret_passcode"));
+  router.use(expressSession({
+  secret: "secret_passcode",
+  cookie: {
+  maxAge: 4000000
+  },
+  resave: false,
+  saveUninitialized: false
+  }));
+  router.use(connectFlash());
+
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3001);
 app.use(
@@ -42,7 +56,13 @@ router.use(express.static("public"));
 router.get("/", (req, res) => {
   res.render("index");
 });
-
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+  });
+router.get("/users/login", usersController.login);
+router.post("/users/login", usersController.authenticate,
+  usersController.redirectView);
 router.get("/forum", themesController.getAllThemes);
 router.get("/forum/:id", themesController.showTheme);
 //router.get("/subscribers", subscribersController.getAllSubscribers);

@@ -26,7 +26,35 @@ module.exports = {
       });
   },
   indexView: (req, res) => {
-    res.render("users/index");
+    res.render("users/index", {
+      flashMessages: {
+      success: "Loaded all users!"
+      }
+  });
+  },
+  login: (req, res) => {
+    res.render("users/login");
+    },
+    authenticate: (req, res, next) => {
+    User.findOne({
+    email: req.body.email
+    })
+    .then(user => {
+    if (user && user.password === req.body.password){
+    res.locals.redirect = `/users/${user._id}`;
+    req.flash("success", `${user.fullName}'s logged in successfully!`);
+    res.locals.user = user;
+    next();
+    } else {
+    req.flash("error", "Your account or password is incorrect. Please try again or contact your system administrator!");
+    res.locals.redirect = "/users/login";
+    next();
+    }
+  })
+  .catch(error => {
+  console.log(`Error logging in user: ${error.message}`);
+  next(error);
+  });
   },
 
   new: (req, res) => {
@@ -47,6 +75,26 @@ module.exports = {
         next(error);
       });
   },
+  create: (req, res, next) => {
+    let userParams = getUserParams(req.body);
+    User.create(userParams)
+    .then(user => {
+    req.flash("success", `${user.fullName}'s account created
+    ➥ successfully!`);
+    res.locals.redirect = "/users";
+    res.locals.user = user;
+    next();
+    })
+    .catch(error => {
+    console.log(`Error saving user: ${error.message}`);
+    res.locals.redirect = "/users/new";
+    req.flash(
+    "error",
+    `Failed to create user account because: ➥${error.message}.`
+    );
+    next();
+    });
+    },
 
   redirectView: (req, res, next) => {
     let redirectPath = res.locals.redirect;
