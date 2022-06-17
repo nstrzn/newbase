@@ -162,11 +162,14 @@ module.exports = {
       }
     });
   },
-  
+
   logout: (req, res, next) => {
-    req.logout();
+    req.logout(function(err){
+      if (err) return next (err);
+    
     req.flash("success", "You have been logged out!");
     res.locals.redirect = "/";
     next();
+  });
   }
 };
