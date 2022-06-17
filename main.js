@@ -17,21 +17,19 @@ const express = require("express"),
   expressSession = require("express-session"),
   cookieParser = require("cookie-parser"),
   connectFlash = require("connect-flash"),
-  expressValidator = require("express-validator"),
+  passport = require("passport"),
   errorController = require("./controllers/errorController"),
   themesController = require("./controllers/themesController"),
-  homeController = require("./controllers/homeController"),
   subscribersController = require("./controllers/subscribersController.js"),
   usersController = require("./controllers/usersController.js"),
-  layouts = require("express-ejs-layouts");
+  layouts = require("express-ejs-layouts"),
+  expressValidator = require("express-validator"),
+  User = require("./models/user");
 
 
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3001);
-
-router.use(express.static("public"));
-router.use(layouts);
-router.use(
+app.use(
   express.urlencoded({
     extended: false,
   })
@@ -42,29 +40,46 @@ router.use(
     methods: ["POST", "GET"]
   })
 );
-
 router.use(express.json());
-router.use(cookieParser("secret_passcode"));
-router.use(
-  expressSession({
-    secret: "secret_passcode",
-    cookie: {
-      maxAge: 4000000
-    },
-    resave: false,
-    saveUninitialized: false
-  })
-);
+router.use(expressValidator());
+
+router.use(layouts);
+router.use(express.static("public"));
+
+router.use(cookieParser("newbasepassword"));
+router.use(expressSession({
+ secret: "newbasepassword",
+ cookie: {
+ maxAge: 4000000
+ },
+ resave: false,
+ saveUninitialized: false
+}));
+
+
+router.use(passport.initialize());
+router.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 router.use(connectFlash());
 
 router.use((req, res, next) => {
+res.locals.loggedIn = req.isAuthenticated();
+res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
-});
-router.use(expressValidator());
-router.use(homeController.logRequestPaths);
+ });
 
-router.get("/", homeController.index);
+router.get("/", (req, res) => {
+  res.render("index");
+});
+
+
+router.get("/users/login", usersController.login);
+router.post("/users/login", usersController.authenticate);
+router.get("/users/logout", usersController.logout, usersController.redirectView)
 
 router.get("/forum", themesController.getAllThemes);
 router.get("/forum/:id", themesController.showTheme);
@@ -72,9 +87,7 @@ router.get("/forum/:id", themesController.showTheme);
 //router.get("/contact", subscribersController.getSubscriptionPage);
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
-router.post("/users/create", usersController.validate, usersController.create, usersController.redirectView);router.get("/users/login", usersController.login);
-router.get("/users/login", usersController.login);
-router.post("/users/login", usersController.authenticate, usersController.redirectView);
+router.post("/users/create", usersController.validate, usersController.create, usersController.redirectView);
 router.get("/users/:id/edit", usersController.edit);
 router.put("/users/:id/update", usersController.update, usersController.redirectView);
 router.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
@@ -82,6 +95,7 @@ router.get("/users/:id", usersController.show, usersController.showView);
 
 router.get("/subscribers", subscribersController.index, subscribersController.indexView);
 router.get("/subscribers/new", subscribersController.new);
+
 router.post(
   "/subscribers/create",
   subscribersController.create,
