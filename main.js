@@ -14,11 +14,15 @@ const express = require("express"),
   app = express(),
   router = express.Router(),
   methodOverride = require("method-override"),
+  expressSession = require("express-session"),
+  cookieParser = require("cookie-parser"),
+  connectFlash = require("connect-flash"),
   errorController = require("./controllers/errorController"),
   themesController = require("./controllers/themesController"),
   subscribersController = require("./controllers/subscribersController.js"),
   usersController = require("./controllers/usersController.js"),
   layouts = require("express-ejs-layouts");
+
 
 
 app.set("view engine", "ejs");
@@ -39,9 +43,30 @@ router.use(express.json());
 router.use(layouts);
 router.use(express.static("public"));
 
+router.use(cookieParser("newbasepassword"));
+router.use(expressSession({
+ secret: "newbasepassword",
+ cookie: {
+ maxAge: 4000000
+ },
+ resave: false,
+ saveUninitialized: false
+}));
+
+router.use(connectFlash());
+
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+ });
+
 router.get("/", (req, res) => {
   res.render("index");
 });
+
+
+router.get("/users/login", usersController.login);
+router.post("/users/login", usersController.authenticate, usersController.redirectView);
 
 router.get("/forum", themesController.getAllThemes);
 router.get("/forum/:id", themesController.showTheme);
