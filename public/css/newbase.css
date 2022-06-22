@@ -110,6 +110,23 @@ a {
   top: 110px;
 }
 
+.login-status {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+.log-out {
+  position: absolute;
+  right: 10px;
+}
+
+.login-status .bubble {
+  padding: 10px;
+  background: #c1ffc1;
+  border-radius: 20px;
+}
+
 .error {
   background: rgba(209, 46, 42, 0.7);
 }
