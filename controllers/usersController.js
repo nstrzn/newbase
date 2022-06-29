@@ -27,11 +27,15 @@ module.exports = {
       });
   },
   indexView: (req, res) => {
+    if (req.query.format === "json")
+    {res.json(res.locals.users)
+    }else {
     res.render("users/index", {
       flashMessages: {
         success: "Loaded all users!"
       }
     });
+  }
   },
   new: (req, res) => {
     res.render("users/new");
