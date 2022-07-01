@@ -1,8 +1,52 @@
-let collapseBtn = document.querySelector('.collapsible');
+let collapseBtn = document.querySelector(".collapsible");
 let submitBtn = document.querySelector(".theme-submit-btn");
 
-collapseBtn.addEventListener('click', collapse);
-function collapse() {
+$(document).ready(() => {
+  $("#modal-button").click(() => {
+    $(".modal-body").html("");
+    $.get("/api/forum", (results = {}) => {
+      let data = results.data;
+      if (!data || !data.themes) return;
+      let subarr = data.themes.reverse().slice(0, 5);
+      subarr.forEach((theme) => {
+        $(".modal-body").append(
+          `<div class="theme-box">
+          <span>
+          <div class="theme-title">${theme.title}</div>
+          <div class="theme-description">${theme.description}</div>
+          </span>
+          <button class="join-button button" data-id="${theme._id}">Join</button>
+          </div>`
+        );
+      });
+    }).then(() => {
+      addJoinButtonListener();
+    });
+  });
+
+  let addJoinButtonListener = () => {
+    $(".join-button").click((event) => {
+      console.log("here");
+      let $button = $(event.target),
+        themeId = $button.data("id");
+      $.get(`/api/forum/${themeId}/join`, (results = {}) => {
+        let data = results.data;
+        if (data && data.success) {
+          $button
+            .text("Joined")
+            .addClass("joined-button")
+            .removeClass("join-button");
+        } else {
+          $button.text("Try again");
+        }
+      });
+    });
+  };
+});
+
+if (collapseBtn != null) {
+  collapseBtn.addEventListener("click", collapse);
+  function collapse() {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
     if (content.style.display === "block") {
@@ -10,9 +54,12 @@ function collapse() {
     } else {
       content.style.display = "block";
     }
+  }
 }
 
-submitBtn.addEventListener('click', closeCollapsible);
+if (submitBtn != null) {
+  submitBtn.addEventListener("click", closeCollapsible);
+}
 
 function closeCollapsible() {
   let form = document.querySelector(".forum-form");
