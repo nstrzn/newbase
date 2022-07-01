@@ -53,6 +53,7 @@ a {
   cursor: pointer;
   display: inline-block;
   color: #fff;
+  border: none;
 }
 
 .button:hover {
@@ -112,4 +113,15 @@ a {
 
 .error {
   background: rgba(209, 46, 42, 0.7);
+}
+
+.modal-dialog {
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  top: 15em;
+}
+
+.theme-box:not(:last-of-type){
+  border-bottom: 1px solid #e9ecef;
 }

@@ -22,11 +22,15 @@ module.exports = {
       });
   },
   indexView: (req, res) => {
-    res.render("forum/index", {
-      flashMessages: {
-        success: "Loaded all themes!"
+    if (req.query.format === "json") {
+      res.json(res.locals.themes);
+      } else {
+        res.render("forum/index", {
+          flashMessages: {
+            success: "Loaded all themes!"
+          }
+        });
       }
-    });
   },
   show: (req, res, next) => {
     let themeId = req.params.id;
