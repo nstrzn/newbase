@@ -9,23 +9,17 @@ db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
 mongoose.Promise = global.Promise;
-
 const express = require("express"),
   app = express(),
-  router = express.Router(),
+  router = require("./routes/index"),
   methodOverride = require("method-override"),
   expressSession = require("express-session"),
   cookieParser = require("cookie-parser"),
   connectFlash = require("connect-flash"),
   passport = require("passport"),
-  errorController = require("./controllers/errorController"),
-  themesController = require("./controllers/themesController"),
-  subscribersController = require("./controllers/subscribersController.js"),
-  usersController = require("./controllers/usersController.js"),
   layouts = require("express-ejs-layouts"),
   expressValidator = require("express-validator"),
   User = require("./models/user");
-
 
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3001);
@@ -35,91 +29,47 @@ app.use(
   })
 );
 
-router.use(
+app.use(
   methodOverride("_method", {
-    methods: ["POST", "GET"]
+    methods: ["POST", "GET"],
   })
 );
-router.use(express.json());
-router.use(expressValidator());
+app.use(express.json());
+app.use(expressValidator());
 
-router.use(layouts);
-router.use(express.static("public"));
+app.use(layouts);
+app.use(express.static("public"));
 
-router.use(cookieParser("newbasepassword"));
-router.use(expressSession({
- secret: "newbasepassword",
- cookie: {
- maxAge: 4000000
- },
- resave: false,
- saveUninitialized: false
-}));
+app.use(cookieParser("newbasepassword"));
+app.use(
+  expressSession({
+    secret: "newbasepassword",
+    cookie: {
+      maxAge: 4000000,
+    },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
-
-router.use(passport.initialize());
-router.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-router.use(connectFlash());
+app.use(connectFlash());
 
-router.use((req, res, next) => {
-res.locals.loggedIn = req.isAuthenticated();
-res.locals.currentUser = req.user;
-res.locals.flashMessages = req.flash();
- next();
- });
-
-router.get("/", (req, res) => {
-  res.render("index");
+app.use((req, res, next) => {
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
+  res.locals.flashMessages = req.flash();
+  next();
 });
 
-
-router.get("/users/login", usersController.login);
-router.post("/users/login", usersController.authenticate);
-router.get("/users/logout", usersController.logout, usersController.redirectView)
-
-router.get("/forum", themesController.getAllThemes);
-router.get("/forum/:id", themesController.showTheme);
-//router.get("/subscribers", subscribersController.getAllSubscribers);
-//router.get("/contact", subscribersController.getSubscriptionPage);
-router.get("/users", usersController.index, usersController.indexView);
-router.get("/users/new", usersController.new);
-router.post("/users/create", usersController.validate, usersController.create, usersController.redirectView);
-router.get("/users/:id/edit", usersController.edit);
-router.put("/users/:id/update", usersController.update, usersController.redirectView);
-router.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
-router.get("/users/:id", usersController.show, usersController.showView);
-
-router.get("/subscribers", subscribersController.index, subscribersController.indexView);
-router.get("/subscribers/new", subscribersController.new);
-
-router.post(
-  "/subscribers/create",
-  subscribersController.create,
-  subscribersController.redirectView
-);
-router.get("/subscribers/:id/edit", subscribersController.edit);
-router.put(
-  "/subscribers/:id/update",
-  subscribersController.update,
-  subscribersController.redirectView
-);
-router.get("/subscribers/:id", subscribersController.show, subscribersController.showView);
-router.delete(
-  "/subscribers/:id/delete",
-  subscribersController.delete,
-  subscribersController.redirectView
-);
-//router.post("/subscribe", subscribersController.saveSubscriber);
-router.post("/forum", themesController.saveTheme);
-
-
-router.use(errorController.pageNotFoundError);
-router.use(errorController.internalServerError);
-
+app.get("/", (req, res) => {
+  res.render("index");
+});
 app.use("/", router);
 
 app.listen(app.get("port"), () => {

@@ -8,6 +8,8 @@
 	<link rel="shortcut icon" type="image/png" href="/images/icon.png" />
 	<link rel="stylesheet" href="/css/bootstrap.css">
 	<link rel="stylesheet" href="/css/newbase.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.js"></script>
 	<script defer src="/js/newbase.js"></script>
 </head>
 
@@ -26,6 +28,7 @@
 			<a href="/subscribers/new">
 				<span class="button">Subscribe</span>
 			</a>
+			<span><%- include ('forum/_themesModal.ejs'); %></span>
 		</div>
 		<div class="login-status">
 			<% if (loggedIn) { %>
@@ -58,7 +61,7 @@
 			<% } %>
 		</div>
 
-		<div class="container">
+		<div>
 			<%- body %>
 		</div>
 		<%- include ('partials/navigation.ejs'); %>

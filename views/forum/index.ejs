@@ -38,6 +38,9 @@
         <td> <a href="<%= `/forum/${t._id}` %>"><span><%= t.title %></span></a></td>
         <td><%= t.description %></td>
         <td><%= t.entryDate%></td>
+        <td>
+          <a class="button" href="<%= `/forum/${t._id}/delete?_method=DELETE` %>" onclick="return confirm('Are you sure you want to delete this record?')" a>Delete</a>
+        </td>
       </tr>
       <% }); %>
     </tbody>
