@@ -137,3 +137,13 @@ a {
 .modal-dialog {
   z-index: 100;
 }
+
+.joined-button {
+  background-color: rgb(60, 158, 60);
+  height: fit-content;
+}
+
+.joined-button:hover {
+  background-color: rgb(60, 158, 60, 0.5);
+  color: rgba(16, 53, 16, 0.5);
+}

@@ -70,7 +70,7 @@ module.exports = {
         res.locals.redirect = "/forum";
         next();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(`Error deleting subscriber by ID: ${error.message}`);
         next();
       });
@@ -114,6 +114,21 @@ module.exports = {
         });
     } else {
       next(new Error("User must log in."));
+    }
+  },
+  filterUserThemes: (req, res, next) => {
+    let currentUser = res.locals.currentUser;
+    if (currentUser) {
+      let mappedThemes = res.locals.themes.map((theme) => {
+        let userJoined = currentUser.themes.some((userTheme) => {
+          return userTheme.equals(theme._id);
+        });
+        return Object.assign(theme.toObject(), { joined: userJoined });
+      });
+      res.locals.themes = mappedThemes;
+      next();
+    } else {
+      next();
     }
   },
 };

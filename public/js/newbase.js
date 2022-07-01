@@ -2,7 +2,8 @@ let collapseBtn = document.querySelector(".collapsible");
 let submitBtn = document.querySelector(".theme-submit-btn");
 
 $(document).ready(() => {
-  $("#modal-button").click(() => {
+ 
+  $("#modal-btn").click(() => {
     $(".modal-body").html("");
     $.get("/api/forum", (results = {}) => {
       let data = results.data;
@@ -15,7 +16,7 @@ $(document).ready(() => {
           <div class="theme-title">${theme.title}</div>
           <div class="theme-description">${theme.description}</div>
           </span>
-          <button class="join-button button" data-id="${theme._id}">Join</button>
+          <a><span class='${theme.joined ? "joined-button button" : "join-button button"}'data-id="${theme._id}"> ${theme.joined ? "Joined" : "Join"}</span></a>
           </div>`
         );
       });
@@ -26,7 +27,6 @@ $(document).ready(() => {
 
   let addJoinButtonListener = () => {
     $(".join-button").click((event) => {
-      console.log("here");
       let $button = $(event.target),
         themeId = $button.data("id");
       $.get(`/api/forum/${themeId}/join`, (results = {}) => {
