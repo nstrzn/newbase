@@ -23,7 +23,7 @@ var subscriberSchema = new Schema(
     forum: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Fourm"
+        ref: "Forum"
       }
     ]
   },
