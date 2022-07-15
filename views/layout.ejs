@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.2.0/mdb.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
 	<script defer src="/js/newbase.js"></script>
 </head>
 
@@ -20,6 +21,9 @@
 			<h1 id="title">NewBase</h1>
 		</div>
 		<div class="col-sm nav-align">
+			<a href="/chat" class="chat-icon">
+							@
+			</a>
 			<a href="/">
 				<span class="button">Home</span>
 			</a>
@@ -47,7 +51,7 @@
 			<% } %>
 		</div>
 	</div>
-	
+
 	<div class="flashes">
 			<% if (flashMessages) { %>
 			<% if (flashMessages.success) { %>
