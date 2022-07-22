@@ -27,6 +27,17 @@
 				<span class="button">Subscribe</span>
 			</a>
 		</div>
+		<div class="login">
+			<% if (loggedIn) { %>
+			<p>Logged in as
+			<a href="<%=`/users/${currentUser._id}`%>">
+			<%= currentUser.fullName %></a>
+			<a href="/users/logout">Log out</a>
+			</p>
+			<%} else {%>
+			<a href="/users/login">Log In</a>
+			<% } %>
+		</div>
 	</div>
 	<div class="flashes">
 		<% if (flashMessages) { %>
